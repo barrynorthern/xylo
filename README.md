@@ -1,46 +1,58 @@
-# Getting Started with Create React App
+<img src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f485.svg" width="50" height="50" />
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Spill Frontend Tech Test
 
-## Available Scripts
+Spill is a therapy product, users book therapy through Spill. Users often have requirements about how they can book therapy, eg counsellor specialism.
 
-In the project directory, you can run:
+The challenge is to build a booking page that takes into account several different filters.
 
-### `yarn start`
+**User requirements**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- as a user I can view all upcoming appointments
+- as a user I can see a single page per appointment type (one-off, consultation)
+- as a user I can filter based on (counsellor specialisms, medium)
+- as a user I can't see duplicate appointment times even if more than one therapist is available at that time
+- as a user the UI should be simple and easy to understand
+- as a user I can select the appointment time I want to book
+- as a user I can see a confirmation screen of my booking
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+ 
 
-### `yarn test`
+**Technical Requirements**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- build it using React - other technical choices and libraries are up to you
+- written in TypeScript (or JavaScript)
+- the site should be hosted
 
-### `yarn build`
+**Things to think about**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- separation of concerns
+- component reusability
+- responsiveness
+- design and UX
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Assumptions**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- appointments last an hour
 
-### `yarn eject`
+**Spill colours**
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- teal `#35D0BA`
+- blue `#041549`
+- gray `#F3F4F6`
+- dark gray `#374151`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+*you can use other colours - this isn't our entire colour palette, but could be a good starting point*
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+We are not exposing an actual API for this exercise. Please use these JSON files as your data. When booking an appointment mock the logic. Please treat this in a similar way to how you would expect to work with an API.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The data is split into files: a counsellors array that contains all counsellors and their specialisms, and availability, that is normalised by counsellor id.
 
-## Learn More
+[counsellor-mock.json](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5a7137d0-871f-4561-a243-137b81c91222/counsellor-mock.json)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+[availability-mock.json](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b8e5ecb4-f685-4292-9296-e6f311dd7ebe/availability-mock.json)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Development Resources
+
+* https://mherman.org/blog/dockerizing-a-react-app/
+* https://tailwindcss.com/docs/guides/create-react-app
