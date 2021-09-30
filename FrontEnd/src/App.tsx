@@ -3,7 +3,7 @@ import React from 'react';
 function App() {
   return (
     <div className="container mx-auto px-4">
-      Spill Frontend Tech Test
+      <h1 className="font-sans text-lg font-bold py-4">Bookings</h1>
     </div>
   );
 }

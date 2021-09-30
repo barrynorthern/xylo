@@ -1,8 +1,8 @@
 <img src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f485.svg" width="50" height="50" />
 
-# Spill Frontend Tech Test
+# XYLO
 
-Spill is a therapy product, users book therapy through Spill. Users often have requirements about how they can book therapy, eg counsellor specialism.
+Xylo is a therapy product, users book therapy through Xylo. Users often have requirements about how they can book therapy, eg counsellor specialism.
 
 The challenge is to build a booking page that takes into account several different filters.
 
@@ -35,7 +35,7 @@ The challenge is to build a booking page that takes into account several differe
 
 - appointments last an hour
 
-**Spill colours**
+**Xylo colours**
 
 - teal `#35D0BA`
 - blue `#041549`
