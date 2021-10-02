@@ -10,12 +10,16 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": ["es2019", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@xylo/booking-services": ["libs/booking-services/src/index.ts"]
+      "@xylo/booking-services": ["libs/booking-services/src/index.ts"],
+      "@xylo/xylo-db": ["libs/xylo-db/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

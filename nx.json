@@ -36,6 +36,9 @@
     "xylo": {
       "tags": []
     },
+    "xylo-db": {
+      "tags": []
+    },
     "xylo-e2e": {
       "tags": [],
       "implicitDependencies": ["xylo"]
