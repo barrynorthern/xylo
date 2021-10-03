@@ -1,4 +1,6 @@
 import { ICounsellorDataModel, GetAvailability, GetCounsellors, QueryCounsellors } from '@xylo/xylo-db';
+import { join } from 'path';
+import { stringify } from 'querystring';
 
 export interface IPagedResponseModel<TData> {
     total: number;
@@ -22,13 +24,19 @@ interface IAppointmentEntry {
   counsellor: string;
 }
 
+export interface ICounsellorModel {
+    id: string;
+    name: string;
+}
+
 export interface IAppointment {
   id: string;
-  counsellor: string;
+  counsellor: ICounsellorModel;
 }
 
 export interface IAppointmentRow {
-  datetime: string;
+  date: string;
+  time: string;
   appointments: IAppointment[];
 }
 
@@ -42,13 +50,28 @@ function MapCounsellorIds(counsellors: ICounsellorDataModel[]) {
   return counsellors?.map(counsellor => counsellor.id) || [];
 }
 
+const dateFormat = new Intl.DateTimeFormat("en-GB", {year: 'numeric', month: 'long', day: '2-digit'});
+const timeFormat = new Intl.DateTimeFormat("en-GB", {hour: '2-digit', minute: '2-digit'});
+
+function createDate(date: string): string {
+    return dateFormat.format(Date.parse(date));
+}
+
+function createTime(date: string): string {
+    return timeFormat.format(Date.parse(date));
+}
+
 export async function QueryAppointments(types: string[] | null, mediums: string[] | null, specialisms: string[] | null, skip: number, take: number): Promise<IPagedResponseModel<IAppointmentRow>> {
     
     const match = QueryCounsellors(types, mediums, specialisms);
+    const getCounsellorName = (id: string) => {
+        const counsellor = match.find(x => x.id == id);
+        return [counsellor?.firstName, counsellor?.lastName].filter(x => !!x).join(' ');
+    }
     const counsellors = MapCounsellorIds(match);
     const appointments = FilterAppointments(counsellors).sort((a, b) => { return a.datetime.localeCompare(b.datetime, undefined, { numeric: true, sensitivity: 'base' }); });
-    const groups = appointments.reduce((rv: {[key: string]: any}, x) => { (rv[x.datetime] = rv[x.datetime] || []).push({counsellor: x.counsellor, id: x.id}); return rv; }, {});
-    const page = Object.entries(groups).slice(skip, skip + take).map(x => { return { datetime: x[0], appointments: <IAppointment[]>x[1] }; });
+    const groups = appointments.reduce((rv: {[key: string]: any}, x) => { (rv[x.datetime] = rv[x.datetime] || []).push({counsellor: { id: x.counsellor, name: getCounsellorName(x.counsellor) }, id: x.id}); return rv; }, {});
+    const page = Object.entries(groups).slice(skip, skip + take).map(x => { return { date: createDate(x[0]), time: createTime(x[0]), appointments: <IAppointment[]>x[1] }; });
    
     return {
         total: Object.keys(groups).length,
@@ -72,6 +95,10 @@ export async function GetSpecialisms(): Promise<string[]> {
     return [...new Set(allSpecialisms)].sort();
 }
 
+async function SimulateNetwork(): Promise<any> {
+    return new Promise(resolve => setTimeout(resolve, 1000));
+}   
+
 export interface IAppointmentData {
     appointmentTypes: AppointmentType[];
     appointmentMediums: AppointmentMedium[];
@@ -83,6 +110,7 @@ export async function GetAppData(): Promise<IAppointmentData> {
         GetAppointmentTypes(),
         GetAppointmentMediums(),
         GetSpecialisms(),
+        SimulateNetwork()
     ])
     .then((values) => {
         return {
