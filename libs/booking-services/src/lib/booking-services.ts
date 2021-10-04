@@ -8,7 +8,7 @@ export interface IPagedResponseModel<TData> {
     size: number;
 }
 
-export type AppointmentType = 'consultation' | 'one-off';
+export type AppointmentType = 'consultation' | 'one_off';
 export type AppointmentMedium = 'phone' | 'video';
 
 export interface ICounsellor {
@@ -81,7 +81,7 @@ export async function QueryAppointments(types: string[] | null, mediums: string[
 }
 
 export async function GetAppointmentTypes(): Promise<AppointmentType[]> {
-    return ['consultation', 'one-off'];
+    return ['consultation', 'one_off'];
 }
 
 export async function GetAppointmentMediums(): Promise<AppointmentMedium[]> {

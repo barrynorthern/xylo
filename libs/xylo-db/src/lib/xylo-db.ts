@@ -27,5 +27,5 @@ export function QueryCounsellors(types: string[] | null, mediums: string[] | nul
     return GetCounsellors().filter(counsellor => 
        (!types || counsellor.appointment_types.some(appointment_type => types.includes(appointment_type)))
     && (!mediums || counsellor.appointment_mediums.some(appointment_medium => mediums.includes(appointment_medium)))
-    && (!specialisms || counsellor.specialisms.some(specialism => specialisms.includes(specialism))));
+    && (!specialisms || specialisms.length == 0 || counsellor.specialisms.some(specialism => specialisms.includes(specialism))));
 }
