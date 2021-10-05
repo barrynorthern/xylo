@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   useAppState, 
   Action,
@@ -72,18 +72,17 @@ function RadioSelect({group, options, optionSelected, localisation}: IRadioSelec
 interface ICheckboxProps {
   id: string,
   name: string,
+  initialChecked: boolean,
   onChange: (checked: boolean) => void;
 }
 
-function Checkbox({id, name, onChange}: ICheckboxProps) {
-  const [checked, setChecked] = useState(false);
-  const handleChange = () => {
-    setChecked(!checked);
-    onChange(checked);
+function Checkbox({id, name, initialChecked, onChange}: ICheckboxProps) {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setTimeout(() => onChange(e.target.checked), 0);
   };
   return (
     <div className="flex mr-4 cursor-pointer">
-      <input className="mt-1 cursor-pointer" id={id} type="checkbox" checked={checked} onChange={handleChange}/>
+      <input className="mt-1 cursor-pointer" id={id} type="checkbox" defaultChecked={initialChecked} onChange={handleChange}/>
       <label htmlFor={id} className="ml-2 cursor-pointer">{name}</label>
     </div>
   );
@@ -115,19 +114,11 @@ function MultiSelect({options, optionSelected, optionDeselected, localisation}: 
         key={option}
         id={option}
         name={localisation[option]}
+        initialChecked={false}
         onChange={handleChange(option)}/>
       ))}
     </fieldset>
   );
-}
-
-function fetchAppointments(filter: IAppointmentFilter, dispatch: React.Dispatch<Action>) {
-  console.log("fetch", JSON.stringify(filter));
-  QueryAppointments(
-      [filter.type], filter.mediums, filter.specialisms, 0, 10000)
-      .then(
-        (r) => dispatch({type: "set_appointments", payload: r.data}),
-        () => console.error);
 }
 
 // TODO: do localisation properly
@@ -147,21 +138,34 @@ function AppointmentScreen({show}: {show: boolean}) {
   
   const {state, dispatch} = useAppState();
 
-  useEffect(() => fetchAppointments(state.filter, dispatch), []);
+  useEffect(() => {
+    let mounted = true; 
+    console.log("fetch", JSON.stringify(state.filter));
+    QueryAppointments(
+        [state.filter.type], state.filter.mediums, state.filter.specialisms, 0, 10000)
+        .then((r) => {
+          if (mounted) {
+            dispatch({type: "set_appointments", payload: r.data});    
+          }
+        },
+        () => console.error);
+        return () => { mounted = false };
+  },  
+  [
+    state.filter,
+    dispatch
+  ]);
 
   const typeSelected = (type: string) => {
     dispatch({type: 'set_filter_type', payload: type as AppointmentType});
-    fetchAppointments(state.filter, dispatch);
   }
 
   const mediumSelected = (type: string) => {
     dispatch({type: 'add_filter_medium', payload: type as AppointmentMedium});
-    fetchAppointments(state.filter, dispatch);
   }
   
   const mediumDeselected = (type: string) => {
     dispatch({type: 'remove_filter_medium', payload: type as AppointmentMedium});
-    fetchAppointments(state.filter, dispatch);
   }
 
   return show 
@@ -188,11 +192,19 @@ function AppointmentScreen({show}: {show: boolean}) {
 export function App() {
   
   const {state, dispatch} = useAppState();
+  const mounted = useRef(true);
 
   useEffect(() => {
+    mounted.current = true;
     GetAppData().then(
-      (data) => { console.log(data); dispatch({type: 'set_appointment_data', payload: data}); }, 
+      (data) => { 
+        if (mounted.current) {
+          console.log(data); 
+          dispatch({type: 'set_appointment_data', payload: data}); 
+        }
+      }, 
       () => console.error);
+    return () => { mounted.current = false; }
   }, []);
 
   return (
