@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAppState } from "../AppStateContext";
 
 import { 
@@ -8,10 +8,11 @@ import {
   QueryAppointments
 } from '@xylo/booking-services';
 
-import { Appointments } from '../components/Appointments';
+import { Appointments, IAppointmentBooking } from './components/Appointments';
 import { RadioSelect } from '../components/RadioSelect';
 import { MultiSelect } from '../components/MultiSelect';
 import { Button } from '../components/Button';
+import { Loader } from '../components/Loader';
 
 // TODO: do localisation properly
 const localisation =
@@ -26,13 +27,18 @@ const localisation =
   }
 };
 
-export function AppointmentScreen({show}: {show: boolean}) {
+export interface IAppointmentScreenProps {
+    show: boolean;
+    onSelectAppointment: (appointment: IAppointmentBooking) => void;
+}
+
+export function AppointmentScreen({show, onSelectAppointment}: IAppointmentScreenProps) {
   
   const {state, dispatch} = useAppState();
 
   useEffect(() => {
     let mounted = true; 
-    console.log("fetch", JSON.stringify(state.filter));
+    dispatch({type: "set_appointments", payload: []}); 
     QueryAppointments(
         [state.filter.type], state.filter.mediums, state.filter.specialisms, 0, 10000)
         .then((r) => {
@@ -112,11 +118,13 @@ export function AppointmentScreen({show}: {show: boolean}) {
         </div>
       </div>
       <div className="flex flex-col flex-1">
-        <Appointments appointments={state.appointments}/>
+        {state.appointments.length === 0 ?
+         <div className="opacity-50">No Appointments Found</div> : 
+         <Appointments appointments={state.appointments} onSelect={onSelectAppointment}/>}
       </div>
     </div>
   )
   : (
-    <div>Loading ...</div>
+    <div></div>
   );
 }

@@ -7,12 +7,15 @@ import {
   IAppointmentRow,
 } from '@xylo/booking-services';
 
+import { IAppointmentBooking } from './screens/components/Appointments';
+
 export interface AppState {
   loaded: boolean;
   appointmentData: IAppointmentData | null;
   navigation: string;
   filter: IAppointmentFilter;
   appointments: IAppointmentRow[];
+  booking: IAppointmentBooking | null;
 }
 
 export interface IAppointmentFilter {
@@ -34,7 +37,8 @@ export const defaultAppState: AppState = {
   appointmentData: null,
   navigation: 'appointments',
   filter: getDefaultFilter(),
-  appointments: []
+  appointments: [],
+  booking: null
 };
 
 interface AppStateContextProps {
@@ -93,6 +97,10 @@ export type Action =
     type: "set_appointments",
     payload: IAppointmentRow[]
   }
+  | {
+    type: 'set_booking',
+    payload: IAppointmentBooking | null
+  }
 
 const appStateReducer = (state: AppState, action: Action): AppState => {
   switch(action.type) {
@@ -122,6 +130,9 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
     }
     case "set_appointments": {
       return {...state, appointments: action.payload};
+    }
+    case "set_booking": {
+      return {...state, booking: action.payload};
     }
     default: {
       return state;
