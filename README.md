@@ -1,5 +1,10 @@
 <img src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f485.svg" width="50" height="50" />
 
+## Demo
+
+If you have docker set up on your machine, run "yarn xylo-run" to build and deploy to docker locally.
+A live demo has also been deployed to  
+
 # Spill
 
 Spill is a therapy product, users book therapy through Spill. Users often have requirements about how they can book therapy, eg counsellor specialism.

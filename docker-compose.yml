@@ -10,20 +10,21 @@ services:
     build:
       context: ./
       cache_from:
-        - xylo-base-image:nx-base
+        - gcr.io/xylo-328123/xylo
       dockerfile: ./apps/api/Dockerfile
       args:
         NODE_ENV: "development"
         BUILD_FLAG: ""
     image: api:nx-dev
     ports:
-      - 4939:8080
+      - 8080:8080
     environment:
       NODE_ENV: "development"
-      PORT: 4939
+      PORT: 8080
     networks:
       - corp
     restart: on-failure
+    command: yarn gc-start
 
   xylo:
     container_name: xylo

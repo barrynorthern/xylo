@@ -1,4 +1,4 @@
-FROM xylo-base-image:nx-base AS builder
+FROM gcr.io/xylo-328123/xylo AS builder
 
 EXPOSE 4200
 

@@ -1,0 +1,21 @@
+steps:
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/xylo-328123/xylo', '.']
+# running docker-compose
+- name: 'docker/compose:1.26.2'
+  args: ['up', '-d']
+  env:
+  - 'PROJECT_ID=xylo-328123'
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - 'run'
+  - 'deploy'
+  - 'xylo'
+  - '--image'
+  - 'gcr.io/xylo-328123/xylo:latest'
+  - '--region'
+  - 'europe-west6'
+images: [gcr.io/xylo-328123/xylo:latest]

@@ -1,4 +1,6 @@
-FROM xylo-base-image:nx-base AS builder
+FROM gcr.io/xylo-328123/xylo AS builder
+
+EXPOSE 8080
 
 ARG NODE_ENV
 ARG BUILD_FLAG
@@ -6,7 +8,7 @@ WORKDIR /app
 COPY . .
 RUN npx nx build api ${BUILD_FLAG}
 
-FROM xylo-base-image:nx-base
+FROM gcr.io/xylo-328123/xylo
 
 WORKDIR /app
 COPY --from=builder /app ./

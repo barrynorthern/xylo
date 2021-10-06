@@ -1,14 +1,15 @@
 {
-  "name": "front-end",
+  "name": "xylo",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "xylo-build": "docker build . -t xylo-base-image:nx-base",
-    "xylo-run": "docker-compose up",
-    "xylo": "yarn xylo-build && yarn xylo-run" 
+    "xylo-build": "docker build . -t gcr.io/xylo-328123/xylo",
+    "xylo-compose": "docker-compose up",
+    "xylo-run": "yarn xylo-build && yarn xylo-compose",
+    "gc-start": "node ./dist/apps/api/main.js"
   },
   "private": true,
   "dependencies": {
