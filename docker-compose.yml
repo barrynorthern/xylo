@@ -1,20 +1,46 @@
-version: '3.1'
+version: "3.8"
+
+networks:
+  corp:
+    driver: bridge
 
 services:
   api:
-    image: 'xylo-api'
-    expose:
-      - 8080/tcp
+    container_name: api
+    build:
+      context: ./
+      cache_from:
+        - xylo-base-image:nx-base
+      dockerfile: ./apps/api/Dockerfile
+      args:
+        NODE_ENV: "development"
+        BUILD_FLAG: ""
+    image: api:nx-dev
     ports:
-      - 4001:8080
-    build: 'apps/api/.'
+      - 4939:8080
     environment:
       NODE_ENV: "development"
-      PORT: 8080
-  app:
-    depends_on:
-      - api
-    image: 'xylo-app'
-    build: '.'
+      PORT: 4939
+    networks:
+      - corp
+    restart: on-failure
+
+  xylo:
+    container_name: xylo
+    build:
+      context: ./
+      cache_from:
+        - nginx:1.19.2
+      dockerfile: ./apps/xylo/Dockerfile
+      args:
+        NODE_ENV: "development"
+        BUILD_FLAG: ""
+    image: xylo:nx-dev
     ports:
-      - 3000:80
+      - 4900:4200
+    environment:
+      NODE_ENV: "development"
+      PORT: 4900
+    networks:
+      - corp
+    restart: on-failure

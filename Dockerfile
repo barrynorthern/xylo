@@ -1,5 +1,6 @@
-FROM nginx:alpine
-COPY nginx.conf /etc/nginx/nginx.conf
-WORKDIR /usr/share/nginx/html
-COPY dist/apps/xylo .
-COPY dist/apps/api .
+FROM node:lts-alpine3.10
+ARG NODE_ENV
+ARG BUILD_FLAG
+WORKDIR /app
+COPY . .
+RUN yarn

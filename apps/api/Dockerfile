@@ -1,22 +1,16 @@
-# pull official base image
-FROM node:16-alpine
+FROM xylo-base-image:nx-base AS builder
 
-# set working directory
-WORKDIR /api
+ARG NODE_ENV
+ARG BUILD_FLAG
+WORKDIR /app
+COPY . .
+RUN npx nx build api ${BUILD_FLAG}
 
-# add `/api/node_modules/.bin` to $PATH
-ENV PATH /api/node_modules/.bin:$PATH
+FROM xylo-base-image:nx-base
 
-# install api dependencies
-COPY package.json yarn.lock ./
-RUN yarn
-
-# add api
-COPY . ./
-
-
-EXPOSE 80
-EXPOSE 8080
+WORKDIR /app
+COPY --from=builder /app ./
+ENV NODE_ENV=$NODE_ENV
 
 # start api
 CMD ["node", "./dist/apps/api/main.js"]
