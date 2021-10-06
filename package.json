@@ -5,7 +5,12 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "xylo-build": "nx build xylo --prod",
+    "xylo-image": "docker image build -f Dockerfile -t xylo-app .",
+    "xylo-run": "docker-compose -f docker-compose.yml up",
+    "xylo-stop": "docker-compose -f docker-compose.yml down",
+    "xylo": "yarn xylo-build && yarn xylo-image && yarn xylo-run" 
   },
   "private": true,
   "dependencies": {

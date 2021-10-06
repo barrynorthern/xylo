@@ -1,15 +1,6 @@
-import * as express from 'express';
-import { addXyloRoutes } from './app/xylo';
-
+import express from 'express';
 const app = express();
 
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to api!!' });
-});
-addXyloRoutes(app);
+app.get('/', (req, res) => res.send('listening on port 8080'));
 
-const port = process.env.port || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
-});
-server.on('error', console.error);
+app.listen(8080, () => console.log('Server ready'));

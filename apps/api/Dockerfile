@@ -14,5 +14,9 @@ RUN yarn
 # add api
 COPY . ./
 
+
+EXPOSE 80
+EXPOSE 8080
+
 # start api
-CMD ["yarn", "start"]
+CMD ["node", "./dist/apps/api/main.js"]

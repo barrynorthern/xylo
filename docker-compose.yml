@@ -1,23 +1,20 @@
-# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
-version: '3.4'
+version: '3.1'
+
 services:
   api:
-    image: ${DOCKER_REGISTRY-}api:latest
-    build:
-      context: Api
-      dockerfile: Dockerfile
-    expose: 
-      - 443/tcp
+    image: 'xylo-api'
+    expose:
+      - 8080/tcp
     ports:
-      - "4001:443"
-  frontend:
-    image: ${DOCKER_REGISTRY-}frontend:latest
-    build:
-      context: FrontEnd
-      dockerfile: Dockerfile
+      - 4001:8080
+    build: 'apps/api/.'
+    environment:
+      NODE_ENV: "development"
+      PORT: 8080
+  app:
     depends_on:
       - api
-    expose:
-      - 3000/tcp
+    image: 'xylo-app'
+    build: '.'
     ports:
-      - "4000:3000"
+      - 3000:80

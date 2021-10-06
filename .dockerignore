@@ -1,6 +1,5 @@
-**/node_modules
-**/build
-.dockerignore
-**/Dockerfile
-**/Dockerfile.prod
-**/reference
+node_modules
+.git
+libs
+tools
+apps 
