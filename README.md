@@ -1,5 +1,23 @@
 <img src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f485.svg" width="50" height="50" />
 
+## Quick Start
+
+### Build
+$ yarn
+
+### Run locally
+$ yarn start
+
+Note: you will need nx installed globally for this script to work. Alternatively you can make this amendment to the start script in package.json
+
+"start": "npx nx serve"
+
+### Deploy to Docker
+
+$ yarn xylo
+
+Note: you will need Docker installed on your machine for this to work.
+
 # Spill
 
 Spill is a therapy product, users book therapy through Spill. Users often have requirements about how they can book therapy, eg counsellor specialism.
