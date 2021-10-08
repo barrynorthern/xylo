@@ -18,6 +18,10 @@ $ yarn xylo
 
 Note: you will need Docker installed on your machine for this to work.
 
+## Deployment
+
+Since this project builds into a Docker container, deployment to remote servers should be relatively straightforward. I experimented with Google Cloud and Heroku but there were deployment issues I have not yet resolved. There is a branch called google-cloud where some of this deployment investigation work for Google Cloud can be seen. Note, I would not normally include the project id in the repo, but this is just a test. The primary issue here is building a container with an Nx monorepo that runs after deployment. Google Cloud requires a handshake response on port 8080, and for some reason the stub Express node api for this purpose isn't launching. With more development I'm sure this could be resolved.
+
 # Spill
 
 Spill is a therapy product, users book therapy through Spill. Users often have requirements about how they can book therapy, eg counsellor specialism.
